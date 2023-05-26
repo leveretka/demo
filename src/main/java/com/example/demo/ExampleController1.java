@@ -11,19 +11,25 @@ import java.util.stream.Collectors;
 @RestController
 public class ExampleController1 {
 
-    private static List<FullName> namesCache = new ArrayList<>();
-
 
     @GetMapping("/example1")
     List<String> hello(@RequestParam int n) {
+        var  names = new ExampleNamesCache().getNamesCache();
         var name = n % 2 == 0 ? "A" : "B";
         var fullName = new FullName(name);
-        namesCache.add(fullName);
+        names.add(fullName);
 
-        return namesCache.stream().map(FullName::getName).collect(Collectors.toList());
-
+        return names.stream().map(FullName::getName).collect(Collectors.toList());
 
     }
 
+}
+
+class ExampleNamesCache {
+    static List<FullName> namesCache = new ArrayList<>();
+
+    public List<FullName> getNamesCache() {
+        return namesCache;
+    }
 }
 

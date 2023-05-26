@@ -14,13 +14,12 @@ import java.util.Map;
 public class ExampleController3 {
 
     private Map<FullName, Integer> namesCache = new HashMap<>();
+    private BigObject.SmallObject smallObject;
 
 
     @GetMapping("/example3")
     String hello(@RequestParam int n) throws InterruptedException {
-        BigObject.SmallObject smallObject = new BigObject().new SmallObject();
-
-        Thread.sleep(5000);
+        smallObject = new BigObject().new SmallObject();
 
         return smallObject.hello();
     }
