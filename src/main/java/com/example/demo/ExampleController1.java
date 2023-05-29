@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 public class ExampleController1 {
@@ -19,7 +18,7 @@ public class ExampleController1 {
         var fullName = new FullName(name);
         names.add(fullName);
 
-        return names.stream().map(FullName::getName).collect(Collectors.toList());
+        return names.stream().map(FullName::getName).toList();
 
     }
 

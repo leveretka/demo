@@ -18,6 +18,7 @@ repositories {
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter")
 	implementation("org.springframework.boot:spring-boot-starter-web")
+	implementation("org.openjdk.jol:jol-core:0.17")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 

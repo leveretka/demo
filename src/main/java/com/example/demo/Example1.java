@@ -1,7 +1,10 @@
 package com.example.demo;
 
-import java.util.ArrayList;
-import java.util.List;
+
+import org.openjdk.jol.info.ClassLayout;
+
+import java.lang.ref.WeakReference;
+import java.util.*;
 
 public class Example1 {
 
@@ -9,23 +12,52 @@ public class Example1 {
 
     private static List<FullName> namesCache = new ArrayList<>();
 
+
+    private WeakReference<BigObject> bigObject;
+
+
+    public void execute() {
+        var ref = bigObject.get();
+        if (ref == null) {
+            ref = recreateBigObject();
+            bigObject = new WeakReference<>(ref);
+        }
+        ref.hello();
+    }
+
+    private BigObject recreateBigObject() {
+        return null;
+    }
+
+
     public Example1(String name) {
         fullName = new FullName(name);
         namesCache.add(fullName);
     }
 
-    public static void main(String[] args) throws InterruptedException {
-        for (int i = 0; i < 79; i++) {
-            new Example1("A");
-            System.out.println("A");
-            new Example1("B");
-            System.out.println("B");
-            new Example1("C");
-            System.out.println("C");
+    public static void main(String[] args) {
+
+        try(var loader = new CustomClassloader(Example1.class.getClassLoader())) {
+            var clazz = loader.loadClass("com.example.classloader.MyExampleClass");
+            var instance = clazz.getConstructor().newInstance();
+            clazz.getMethod("doSomething").invoke(instance);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
+    }
 
-        Thread.sleep(1000*3600);
+    void run() {
+        var plugins = new ArrayDeque<Plugin>();
+        plugins.add(new JavaPlugin());
+        plugins.add(new CPPPlugin());
+        for (var plugin = plugins.poll(); plugin != null; plugin = plugins.poll()) {
+            plugin.execute();
+        }
+    }
 
+    void testLayout() {
+        var instance = new BigObject().new SmallObject();
+        ClassLayout.parseInstance(instance).toPrintable();
     }
 
 }

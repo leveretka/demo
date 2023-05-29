@@ -1,7 +1,6 @@
 package com.example.demo;
 
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
@@ -14,12 +13,13 @@ import java.util.Map;
 public class ExampleController3 {
 
     private Map<FullName, Integer> namesCache = new HashMap<>();
-    private BigObject.SmallObject smallObject;
+    private List<BigObject.SmallObject> smallObjects = new ArrayList<>();
 
 
     @GetMapping("/example3")
-    String hello(@RequestParam int n) throws InterruptedException {
-        smallObject = new BigObject().new SmallObject();
+    String hello() {
+        BigObject.SmallObject smallObject = new BigObject.SmallObject();
+        smallObjects.add(smallObject);
 
         return smallObject.hello();
     }
@@ -42,7 +42,7 @@ class BigObject {
         return "Hello from the BigObject!";
     }
 
-    class SmallObject {
+    static class SmallObject {
 
         public String hello() {
             return "Hello from the SmallObject!";
